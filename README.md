@@ -1,41 +1,45 @@
-# TypeScript React Starter
+#练习TypeScript
 
-This quick start guide will teach you how to wire up TypeScript with [React](http://facebook.github.io/react/).
-By the end, you'll have
 
-* a project with React and TypeScript
-* linting with [TSLint](https://github.com/palantir/tslint)
-* testing with [Jest](https://facebook.github.io/jest/) and [Enzyme](http://airbnb.io/enzyme/), and
-* state management with [Redux](https://github.com/reactjs/react-redux)
+[翻译参考于](https://zhuanlan.zhihu.com/p/27847933)
 
-We'll use the [create-react-app](https://github.com/facebookincubator/create-react-app) tool to quickly get set up.
+# TypeScript React 指南
 
-We assume that you're already using [Node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/).
-You may also want to get a sense of [the basics with React](https://facebook.github.io/react/docs/hello-world.html).
+本快速入门指南将教你如何整合TypeScript和[React](http://facebook.github.io/react/).
+到最后，你会有
 
-# Install create-react-app
+* 一个包含React和TypeScript的项目
+* 使用[TSLint](https://github.com/palantir/tslint)进行项目检查
+* 使用[Jest](https://facebook.github.io/jest/) 和 [Enzyme](http://airbnb.io/enzyme/)进行测试
+* 状态管理框架[Redux](https://github.com/reactjs/react-redux)
 
-We're going to use the create-react-app because it sets some useful tools and canonical defaults for React projects.
-This is just a command-line utility to scaffold out new React projects.
+我们将使用[create-react-app](https://github.com/facebookincubator/create-react-app)工具来快速搭建一个应用程序
 
+我们假设你已经会使用[Node.js](https://nodejs.org/)和[npm](https://www.npmjs.com/).
+你可能还想了解[the basics with React](https://facebook.github.io/react/docs/hello-world.html)的基础知识.
+
+# 安装 create-react-app
+
+我们将使用create-react-app，因为它为React项目设置了一些有用的工具和规范默认值.
+这只是一个命令行实用工具，用来创建新的React项目.
 ```shell
 npm install -g create-react-app
 ```
 
-# Create our new project
+# 新建项目
 
-We'll create a new project called `my-app`:
+我们新建一个名为`my-app-ts`新项目
 
 ```shell
-create-react-app my-app --scripts-version=react-scripts-ts
+create-react-app my-app-ts --scripts-version=react-scripts-ts
 ```
 
-[react-scripts-ts](https://www.npmjs.com/package/react-scripts-ts) is a set of adjustments to take the standard create-react-app project pipeline and bring TypeScript into the mix.
+[react-scripts-ts](https://www.npmjs.com/package/react-scripts-ts) 是对标准的create-react-app项目管道进行一系列调整，并将TypeScript引入到组合中.
 
-At this point, your project layout should look like the following:
+此时，您的项目布局应该如下所示:
 
 ```text
-my-app/
+my-app-ts/
 ├─ .gitignore
 ├─ node_modules/
 ├─ public/
@@ -46,7 +50,7 @@ my-app/
 └─ tslint.json
 ```
 
-Of note:
+注意:
 
 * `tsconfig.json` contains TypeScript-specific options for our project.
 * `tslint.json` stores the settings that our linter, [TSLint](https://github.com/palantir/tslint), will use.
