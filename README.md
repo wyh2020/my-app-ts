@@ -1,8 +1,7 @@
 #练习TypeScript
 
 
-[翻译参考于1](https://zhuanlan.zhihu.com/p/27847933)
-[翻译参考于2](https://zhongsp.gitbooks.io/typescript-handbook/content/doc/handbook/tutorials/React.html)
+[翻译参考于](https://zhongsp.gitbooks.io/typescript-handbook/content/doc/handbook/tutorials/React.html)
 
 这篇快速上手指南会教你如何将TypeScript与[React](http://facebook.github.io/react/)结合起来使用。
 在最后，你将学到：
