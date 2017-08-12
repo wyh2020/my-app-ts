@@ -1,42 +1,42 @@
 #练习TypeScript
 
 
-[翻译参考于](https://zhuanlan.zhihu.com/p/27847933)
+[翻译参考于1](https://zhuanlan.zhihu.com/p/27847933)
+[翻译参考于2](https://zhongsp.gitbooks.io/typescript-handbook/content/doc/handbook/tutorials/React.html)
 
-# TypeScript React 指南
+这篇快速上手指南会教你如何将TypeScript与[React](http://facebook.github.io/react/)结合起来使用。
+在最后，你将学到：
 
-本快速入门指南将教你如何整合TypeScript和[React](http://facebook.github.io/react/).
-到最后，你会有
+* 使用TypeScript和React创建工程
+* 使用[TSLint](https://github.com/palantir/tslint)进行代码检查
+* 使用[Jest](https://facebook.github.io/jest/)和[Enzyme](http://airbnb.io/enzyme/)进行测试，以及
+* 使用[Redux](https://github.com/reactjs/react-redux)管理状态
 
-* 一个包含React和TypeScript的项目
-* 使用[TSLint](https://github.com/palantir/tslint)进行项目检查
-* 使用[Jest](https://facebook.github.io/jest/) 和 [Enzyme](http://airbnb.io/enzyme/)进行测试
-* 状态管理框架[Redux](https://github.com/reactjs/react-redux)
+我们会使用[create-react-app](https://github.com/facebookincubator/create-react-app)工具快速搭建工程环境。
 
-我们将使用[create-react-app](https://github.com/facebookincubator/create-react-app)工具来快速搭建一个应用程序
+这里假设你已经在使用[Node.js](https://nodejs.org/)和[npm](https://www.npmjs.com/)。
+并且已经了解了[React的基础知识](https://facebook.github.io/react/docs/hello-world.html)。
 
-我们假设你已经会使用[Node.js](https://nodejs.org/)和[npm](https://www.npmjs.com/).
-你可能还想了解[the basics with React](https://facebook.github.io/react/docs/hello-world.html)的基础知识.
+# 安装create-react-app
 
-# 安装 create-react-app
+我们之所以使用create-react-app是因为它能够为React工程设置一些有效的工具和权威的默认参数。
+它仅仅是一个用来搭建React工程的命令行工具而已。
 
-我们将使用create-react-app，因为它为React项目设置了一些有用的工具和规范默认值.
-这只是一个命令行实用工具，用来创建新的React项目.
 ```shell
 npm install -g create-react-app
 ```
 
-# 新建项目
+# 创建新工程
 
-我们新建一个名为`my-app-ts`新项目
+让我们首先创建一个叫做`my-app-ts`的新工程：
 
 ```shell
 create-react-app my-app-ts --scripts-version=react-scripts-ts
 ```
 
-[react-scripts-ts](https://www.npmjs.com/package/react-scripts-ts) 是对标准的create-react-app项目管道进行一系列调整，并将TypeScript引入到组合中.
+[react-scripts-ts](https://www.npmjs.com/package/react-scripts-ts)是一系列适配器，它利用标准的create-react-app工程管道并把TypeScript混入进来。
 
-此时，您的项目布局应该如下所示:
+此时的工程结构应如下所示：
 
 ```text
 my-app-ts/
@@ -50,67 +50,67 @@ my-app-ts/
 └─ tslint.json
 ```
 
-注意:
+注意：
 
-* `tsconfig.json` contains TypeScript-specific options for our project.
-* `tslint.json` stores the settings that our linter, [TSLint](https://github.com/palantir/tslint), will use.
-* `package.json` contains our dependencies, as well as some shortcuts for commands we'd like to run for testing, previewing, and deploying our app.
-* `public` contains static assets like the HTML page we're planning to deploy to, or images. You can delete any file in this folder apart from `index.html`.
-* `src` contains our TypeScript and CSS code. `index.tsx` is the entry-point for our file, and is mandatory.
+* `tsconfig.json`包含了工程里TypeScript特定的选项。
+* `tslint.json`保存了要使用的代码检查器的设置，[TSLint](https://github.com/palantir/tslint)。
+* `package.json`包含了依赖，还有一些命令的快捷方式，如测试命令，预览命令和发布应用的命令。
+* `public`包含了静态资源如HTML页面或图片。除了`index.html`文件外，其它的文件都可以删除。
+* `src`包含了TypeScript和CSS源码。`index.tsx`是强制使用的入口文件。
 
-# Running the project
+# 运行工程
 
-Running the project is as simple as running
+通过下面的方式即可轻松地运行这个工程。
 
 ```sh
 npm run start
 ```
 
-This runs the `start` script specified in our `package.json`, and will spawn off a server which reloads the page as we save our files.
-Typically the server runs at `http://localhost:3000`, but should be automatically opened for you.
+它会执行`package.json`里面指定的`start`命令，并且会启动一个服务器，当我们保存文件时还会自动刷新页面。
+通常这个服务器的地址是`http://localhost:3000`，页面应用会被自动地打开。
 
-This tightens the iteration loop by allowing us to quickly preview changes.
+它会保持监听以方便我们快速地预览改动。
 
-# Testing the project
+# 测试工程
 
-Testing is also just a command away:
+测试也仅仅是一行命令的事儿：
 
 ```sh
 npm run test
 ```
 
-This command runs Jest, an incredibly useful testing utility, against all files whose extensions end in `.test.ts` or `.spec.ts`.
-Like with the `npm run start` command, Jest will automatically run as soon as it detects changes.
-If you'd like, you can run `npm run start` and `npm run test` side by side so that you can preview changes and test them simultaneously.
+这个命令会运行Jest，一个非常好用的测试工具，它会运行所有扩展名是`.test.ts`或`.spec.ts`的文件。
+好比是`npm run start`命令，当检测到有改动的时候Jest会自动地运行。
+如果喜欢的话，你还可以同时运行`npm run start`和`npm run test`，这样你就可以在预览的同时进行测试。
 
-# Creating a production build
+# 生成生产环境的构建版本
 
-When running the project with `npm run start`, we didn't end up with an optimized build.
-Typically, we want the code we ship to users to be as fast and small as possible.
-Certain optimizations like minification can accomplish this, but often take more time.
-We call builds like this "production" builds (as opposed to development builds).
+在使用`npm run start`运行工程的时候，我们并没有生成一个优化过的版本。
+通常我们想给用户一个运行的尽可能快并在体积上尽可能小的代码。
+像压缩这样的优化方法可以做到这一点，但是总是要耗费更多的时间。
+我们把这样的构建版本称做“生产环境”版本（与开发版本相对）。
 
-To run a production build, just run
+要执行生产环境的构建，可以运行如下命令：
 
 ```sh
 npm run build
 ```
 
-This will create an optimized JS and CSS build in `./build/static/js` and `./build/static/css` respectively.
+这会相应地创建优化过的JS和CSS文件，`./build/static/js`和`./build/static/css`。
 
-You won't need to run a production build most of the time,
-but it is useful if you need to measure things like the final size of your app.
+大多数情况下你不需要生成生产环境的构建版本，
+但它可以帮助你衡量应用最终版本的体积大小。
 
-# Creating a component
+# 创建一个组件
 
-We're going to write a `Hello` component.
-The component will take the name of whatever we want to greet (which we'll call `name`), and optionally the number of exclamation marks to trail with (`enthusiasmLevel`).
+下面我们将要创建一个`Hello`组件。
+这个组件接收任意一个我们想对之打招呼的名字（我们把它叫做`name`），并且有一个可选数量的感叹号做为结尾（通过`enthusiasmLevel`）。
 
-When we write something like `<Hello name="Daniel" enthusiasmLevel={3} />`, the component should render to something like `<div>Hello Daniel!!!</div>`.
-If `enthusiasmLevel` isn't specified, the component should default to showing one exclamation mark.
-If `enthusiasmLevel` is `0` or negative, it should throw an error.
+若我们这样写`<Hello name="Daniel" enthusiasmLevel={3} />`，这个组件大至会渲染成`<div>Hello Daniel!!!</div>`。
+如果没指定`enthusiasmLevel`，组件将默认显示一个感叹号。
+若`enthusiasmLevel`为`0`或负值将抛出一个错误。
 
-We'll write a `Hello.tsx`:
+下面来写一下`Hello.tsx`：
 
 ```ts
 // src/components/Hello.tsx
@@ -145,15 +145,15 @@ function getExclamationMarks(numChars: number) {
 }
 ```
 
-Notice that we defined a type named `Props` that specifies the properties our component will take.
-`name` is a required `string`, and `enthusiasmLevel` is an optional `number` (which you can tell from the `?` that we wrote out after its name).
+注意我们定义了一个类型`Props`，它指定了我们组件要用到的属性。
+`name`是必需的且为`string`类型，同时`enthusiasmLevel`是可选的且为`number`类型（你可以通过名字后面加`?`为指定可选参数）。
 
-We also wrote `Hello` as a stateless function component (an SFC).
-To be specific, `Hello` is a function that takes a `Props` object, and destructures it.
-If `enthusiasmLevel` isn't given in our `Props` object, it will default to `1`.
+我们创建了一个无状态的函数式组件（Stateless Functional Components，SFC）`Hello`。
+具体来讲，`Hello`是一个函数，接收一个`Props`对象并拆解它。
+如果`Props`对象里没有设置`enthusiasmLevel`，默认值为`1`。
 
-Writing functions is one of two primary [ways React allows us to make components]((https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components)).
-If we wanted, we *could* have written it out as a class as follows:
+使用函数是React中定义组件的[两种方式](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components)之一。
+如果你喜欢的话，也*可以*通过类的方式定义：
 
 ```ts
 class Hello extends React.Component<Props, object> {
@@ -175,20 +175,20 @@ class Hello extends React.Component<Props, object> {
 }
 ```
 
-Classes are useful [when our component instances have some state](https://facebook.github.io/react/docs/state-and-lifecycle.html).
-But we don't really need to think about state in this example - in fact, we specified it as `object` in `React.Component<Props, object>`, so writing an SFC tends to be shorter.
-Local component state is more useful at the presentational level when creating generic UI elements that can be shared between libraries.
-For our application's lifecycle, we will revisit how applications manage general state with Redux in a bit.
+当我们的[组件具有某些状态](https://facebook.github.io/react/docs/state-and-lifecycle.html)的时候，使用类的方式是很有用处的。
+但在这个例子里我们不需要考虑状态 - 事实上，在`React.Component<Props, object>`我们把状态指定为了`object`，因此使用SFC更简洁。
+当在创建可重用的通用UI组件的时候，在表现层使用组件局部状态比较适合。
+针对我们应用的生命周期，我们会审视应用是如何通过Redux轻松地管理普通状态的。
 
-Now that we've written our component, let's dive into `index.tsx` and replace our render of `<App />` with a render of `<Hello ... />`.
+现在我们已经写好了组件，让我们仔细看看`index.tsx`，把`<App />`替换成`<Hello ... />`。
 
-First we'll import it at the top of the file:
+首先我们在文件头部导入它：
 
 ```ts
-import Hello from './components/Hello';
+import Hello from './components/Hello.tsx';
 ```
 
-and then change up our `render` call:
+然后修改`render`调用：
 
 ```ts
 ReactDOM.render(
@@ -197,79 +197,79 @@ ReactDOM.render(
 );
 ```
 
-## Type assertions
+## 类型断言
 
-One final thing we'll point out in this section is the line `document.getElementById('root') as HTMLElement`.
-This syntax is called a *type assertion*, sometimes also called a *cast*.
-This is a useful way of telling TypeScript what the real type of an expression is when you know better than the type checker.
+这里还有一点要指出，就是最后一行`document.getElementById('root') as HTMLElement`。
+这个语法叫做*类型断言*，有时也叫做*转换*。
+当你比类型检查器更清楚一个表达式的类型的时候，你可以通过这种方式通知TypeScript。
 
-The reason we need to do so in this case is that `getElementById`'s return type is `HTMLElement | null`.
-Put simply, `getElementById` returns `null` when it can't find an element with a given `id`.
-We're assuming that `getElementById` will actually succeed, so we need convince TypeScript of that using the `as` syntax.
+这里，我们之所以这么做是因为`getElementById`的返回值类型是`HTMLElement | null`。
+简单地说，`getElementById`返回`null`是当无法找对对应`id`元素的时候。
+我们假设`getElementById`总是成功的，因此我们要使用`as`语法告诉TypeScript这点。
 
-TypeScript also has a trailing "bang" syntax (`!`), which removes `null` and `undefined` from the prior expression.
-So we *could* have written `document.getElementById('root')!`, but in this case we wanted to be a bit more explicit.
+TypeScript还有一种感叹号（`!`）结尾的语法，它会从前面的表达式里移除`null`和`undefined`。
+所以我们也*可以*写成`document.getElementById('root')!`，但在这里我们想写的更清楚些。
 
-# Adding style 😎
+# :sunglasses:添加样式
 
-Styling a component with our setup is easy.
-To style our `Hello` component, we can create a CSS file at `src/components/Hello.css`.
+通过我们的设置为一个组件添加样式很容易。
+若要设置`Hello`组件的样式，我们可以创建这样一个CSS文件`src/components/Hello.css`。
 
 ```css
 .hello {
   text-align: center;
   margin: 20px;
   font-size: 48px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .hello button {
-  margin-left: 25px;
-  margin-right: 25px;
-  font-size: 40px;
-  min-width: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
+    font-size: 40px;
+    min-width: 50px;
 }
 ```
 
-The tools that create-react-app uses (namely, Webpack and various loaders) allow us to just import the stylesheets we're interested in.
-When our build runs, any imported `.css` files will be concatenated into an output file.
-So in `src/components/Hello.tsx`, we'll add the following import.
+`create-react-app`包含的工具（Webpack和一些加载器）允许我们导入样式表文件。
+当我们构建应用的时候，所有导入的`.css`文件会被拼接成一个输出文件。
+因此在`src/components/Hello.tsx`，我们需要添加如下导入语句。
 
 ```ts
 import './Hello.css';
 ```
 
-# Writing tests with Jest
+# 使用Jest编写测试
 
-We had a certain set of assumptions about our `Hello` component.
-Let's reiterate what they were:
+我们对`Hello`组件有一些假设。
+让我们在此重申一下：
 
-> * When we write something like `<Hello name="Daniel" enthusiasmLevel={3} />`, the component should render to something like `<div>Hello Daniel!!!</div>`.
-> * If `enthusiasmLevel` isn't specified, the component should default to showing one exclamation mark.
-> * If `enthusiasmLevel` is `0` or negative, it should throw an error.
+> * 当这样写`<Hello name="Daniel" enthusiasmLevel={3} />`时，组件应被渲染成`<div>Hello Daniel!!!</div>`。
+> * 若未指定`enthusiasmLevel`，组件应默认显示一个感叹号。
+> * 若`enthusiasmLevel`为`0`或负值，它应抛出一个错误。
 
-We can use these requirements to write a few tests for our components.
+我们将针对这些需求为组件写一些注释。
 
-But first, let's install Enzyme.
-[Enzyme](http://airbnb.io/enzyme/) is a common tool in the React ecosystem that makes it easier to write tests for how components will behave.
-By default, our application includes a library called jsdom to allow us to simulate the DOM and test its runtime behavior without a browser.
-Enzyme is similar, but builds on jsdom and makes it easier to make certain queries about our components.
+但首先，我们要安装Enzyme。
+[Enzyme](http://airbnb.io/enzyme/)是React生态系统里一个通用工具，它方便了针对组件的行为编写测试。
+默认地，我们的应用包含了一个叫做jsdom的库，它允许我们模拟DOM以及在非浏览器的环境下测试运行时的行为。
+Enzyme与此类似，但是是基于jsdom的，并且方便我们查询组件。
 
-Let's install it as a development-time dependency.
+让我们把它安装为开发依赖项。
 
 ```sh
 npm install -D enzyme @types/enzyme react-addons-test-utils
 ```
 
-Notice we installed packages `enzyme` as well as `@types/enzyme`.
-The `enzyme` package refers to the package containing JavaScript code that actually gets run, while `@types/enzyme` is a package that contains declaration files (`.d.ts` files) so that TypeScript can understand how you can use Enzyme.
-You can learn more about `@types` packages [here](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html).
+注意我们同时安装了`enzyme`和`@types/enzyme`。
+`enzyme`包指的是包含了实际运行的JavaScript代码包，而`@types/enzyme`则包含了声明文件（`.d.ts`文件）的包，以便TypeScript能够了解该如何使用Enzyme。
+你可以在[这里](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html)了解更多关于`@types`包的信息。
 
-We also had to install `react-addons-test-utils`.
-This is something `enzyme` expects to be installed.
+我们还需要安装`react-addons-test-utils`。
+它是使用`enzyme`所需要安装的包。
 
-Now that we've got Enzyme set up, let's start writing our test!
-Let's create a file named `src/components/Hello.test.tsx`, adjacent to our `Hello.tsx` file from earlier.
+现在我们已经设置好了Enzyme，下面开始编写测试！
+先创建一个文件`src/components/Hello.test.tsx`，与先前的`Hello.tsx`文件放在一起。
 
 ```ts
 // src/components/Hello.test.tsx
@@ -306,58 +306,58 @@ it('throws when the enthusiasm level is negative', () => {
 });
 ```
 
-These tests are extremely basic, but you should be able to get the gist of things.
+这些测试都十分基础，但你可以从中得到启发。
 
-# Adding state management
+# 添加state管理
 
-At this point, if all you're using React for is fetching data once and displaying it, you can consider yourself done.
-But if you're developing an app that's more interactive, then you may need to add state management.
+到此为止，如果你使用React的目的是只获取一次数据并显示，那么你已经完成了。
+但是如果你想开发一个可以交互的应用，那么你需要添加state管理。
 
-## State management in general
+## state管理概述
 
-On its own, React is a useful library for creating composable views.
-However, React doesn't come with any facility for synchronizing data between your application.
-As far as a React component is concerned, data flows down through its children through the props you specify on each element.
+React本身就是一个适合于创建可组合型视图的库。
+但是，React并没有任何在应用间同步数据的功能。
+就React组件而言，数据是通过每个元素上指定的props向子元素传递。
 
-Because React on its own does not provide built-in support for state management, the React community uses libraries like Redux and MobX.
+因为React本身并没有提供内置的state管理功能，React社区选择了Redux和MobX库。
 
-[Redux](http://redux.js.org) relies on synchronizing data through a centralized and immutable store of data, and updates to that data will trigger a re-render of our application.
-State is updated in an immutable fashion by sending explicit action messages which must be handled by functions called reducers.
-Because of the explicit nature, it is often easier to reason about how an action will affect the state of your program.
+[Redux](http://redux.js.org)依靠一个统一且不可变的数据存储来同步数据，并且更新那里的数据时会触发应用的更新渲染。
+state的更新是以一种不可变的方式进行，它会发布一条明确的action消息，这个消息必须被reducer函数处理。
+由于使用了这样明确的方式，很容易弄清楚一个action是如何影响程序的state。
 
-[MobX](https://mobx.js.org/) relies on functional reactive patterns where state is wrapped through observables and passed through as props.
-Keeping state fully synchronized for any observers is done by simply marking state as observable.
-As a nice bonus, the library is already written in TypeScript.
+[MobX](https://mobx.js.org/)借助于函数式响应型模式，state被包装在了可观察对象里，并通过props传递。
+通过将state标记为可观察的，即可在所有观察者之间保持state的同步性。
+另一个好处是，这个库已经使用TypeScript实现了。
 
-There are various merits and tradeoffs to both.
-Generally Redux tends to see more widespread usage, so for the purposes of this tutorial, we'll focus on adding Redux;
-however, you should feel encouraged to explore both.
+这两者各有优缺点。
+但Redux使用得更广泛，因此在这篇教程里，我们主要看如何使用Redux；
+但是也鼓励大家两者都去了解一下。
 
-The following section may have a steep learning curve.
-We strongly suggest you [familiarize yourself with Redux through its documentation](http://redux.js.org/).
+后面的小节学习曲线比较陡。
+因此强烈建议大家先去[熟悉一下Redux](http://redux.js.org/)。
 
-## Setting the stage for actions
+## 设置actions
 
-It doesn't make sense to add Redux unless the state of our application changes.
-We need a source of actions that will trigger changes to take place.
-This can be a timer, or something in the UI like a button.
+只有当应用里的state会改变的时候，我们才需要去添加Redux。
+我们需要一个action的来源，它将触发改变。
+它可以是一个定时器或者UI上的一个按钮。
 
-For our purposes, we're going to add two buttons to control the enthusiasm level for our `Hello` component.
+为此，我们将增加两个按钮来控制`Hello`组件的感叹级别。
 
-## Installing Redux
+## 安装Redux
 
-To add Redux, we'll first install `redux` and `react-redux`, as well as their types, as a dependency.
+安装`redux`和`react-redux`以及它们的类型文件做为依赖。
 
 ```sh
 npm install -S redux react-redux @types/react-redux
 ```
 
-In this case we didn't need to install `@types/redux` because Redux already comes with its own definition files (`.d.ts` files).
+这里我们不需要安装`@types/redux`，因为Redux已经自带了声明文件（`.d.ts`文件）。
 
-## Defining our app's state
+## 定义应用的状态
 
-We need to define the shape of the state which Redux will store.
-For this, we can create a file called `src/types/index.tsx` which will contain definitions for types that we might use throughout the program.
+我们需要定义Redux保存的state的结构。
+创建`src/types/index.tsx`文件，它保存了类型的定义，我们在整个程序里都可能用到。
 
 ```ts
 // src/types/index.tsx
@@ -368,12 +368,12 @@ export interface StoreState {
 }
 ```
 
-Our intention is that `languageName` will be the programming language this app was written in (i.e. TypeScript or JavaScript) and `enthusiasmLevel` will vary.
-When we write our first container, we'll understand why we intentionally made our state slightly different from our props.
+这里我们想让`languageName`表示应用使用的编程语言（例如，TypeScript或者JavaScript），`enthusiasmLevel`是可变的。
+在写我们的第一个容器的时候，就会明白为什么要令state与props稍有不同。
 
-## Adding actions
+## 添加actions
 
-Let's start off by creating a set of message types that our app can respond to in `src/constants/index.tsx`.
+下面我们创建这个应用将要响应的消息类型，`src/constants/index.tsx`。
 
 ```ts
 // src/constants/index.tsx
@@ -386,9 +386,9 @@ export const DECREMENT_ENTHUSIASM = 'DECREMENT_ENTHUSIASM';
 export type DECREMENT_ENTHUSIASM = typeof DECREMENT_ENTHUSIASM;
 ```
 
-This `const`/`type` pattern allows us to use TypeScript's string literal types in an easily accessible and refactorable way.
+这里的`const`/`type`模式允许我们以容易访问和重构的方式使用TypeScript的字符串字面量类型。
 
-Next, we'll create a set of actions and functions that can create these actions in `src/actions/index.tsx`.
+接下来，我们创建一些actions以及创建这些actions的函数，`src/actions/index.tsx`。
 
 ```ts
 import * as constants from '../constants'
@@ -416,20 +416,20 @@ export function decrementEnthusiasm(): DecrementEnthusiasm {
 }
 ```
 
-We've created two types that describe what increment actions and decrement actions should look like.
-We also created a type (`EnthusiasmAction`) to describe cases where an action could be an increment or a decrement.
-Finally, we made two functions that actually manufacture the actions which we can use instead of writing out bulky object literals.
+我们创建了两个类型，它们负责增加操作和减少操作的行为。
+我们还定义了一个类型（`EnthusiasmAction`），它描述了哪些action是可以增加或减少的。
+最后，我们定义了两个函数用来创建实际的actions。
 
-There's clearly boilerplate here, so you should feel free to look into libraries like [redux-actions](https://www.npmjs.com/package/redux-actions) once you've got the hang of things.
+这里有一些清晰的模版，你可以参考类似[redux-actions](https://www.npmjs.com/package/redux-actions)的库。
 
-## Adding a reducer
+## 添加reducer
 
-We're ready to write our first reducer!
-Reducers are just functions that generate changes by creating modified copies of our application's state, but that have *no side effects*.
-In other words, they're what we call *[pure functions](https://en.wikipedia.org/wiki/Pure_function)*.
+现在我们可以开始写第一个reducer了！
+Reducers是函数，它们负责生成应用state的拷贝使之产生变化，但它并没有*副作用*。
+它们是一种*[纯函数](https://en.wikipedia.org/wiki/Pure_function)*。
 
-Our reducer will go under `src/reducers/index.tsx`.
-Its function will be to ensure that increments raise the enthusiasm level by 1, and that decrements reduce the enthusiasm level by 1, but that the level never falls below 1.
+我们的reducer将放在`src/reducers/index.tsx`文件里。
+它的功能是保证增加操作会让感叹级别加1，减少操作则要将感叹级别减1，但是这个级别永远不能小于1。
 
 ```ts
 // src/reducers/index.tsx
@@ -449,23 +449,23 @@ export function enthusiasm(state: StoreState, action: EnthusiasmAction): StoreSt
 }
 ```
 
-Notice that we're using the *object spread* (`...state`) which allows us to create a shallow copy of our state, while replacing the `enthusiasmLevel`.
-It's important that the `enthusiasmLevel` property come last, since otherwise it would be overridden by the property in our old state.
+注意我们使用了*对象展开*（`...state`），当替换`enthusiasmLevel`时，它可以对状态进行浅拷贝。
+将`enthusiasmLevel`属性放在末尾是十分关键的，否则它将被旧的状态覆盖。
 
-You may want to write a few tests for your reducer.
-Since reducers are pure functions, they can be passed arbitrary data.
-For every input, reducers can tested by checking their newly produced state.
-Consider looking into Jest's [toEqual](https://facebook.github.io/jest/docs/expect.html#toequalvalue) method to accomplish this.
+你可能想要对reducer写一些测试。
+因为reducers是纯函数，它们可以传入任意的数据。
+针对每个输入，可以测试reducers生成的新的状态。
+可以考虑使用Jest的[toEqual](https://facebook.github.io/jest/docs/expect.html#toequalvalue)方法。
 
-## Making a container
+## 创建容器
 
-When writing with Redux, we will often write components as well as containers.
-Components are often data-agnostic, and work mostly at a presentational level.
-*Containers* typically wrap components and feed them any data that is necessary to display and modify state.
-You can read more about this concept on [Dan Abramov's article *Presentational and Container Components*](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0).
+在使用Redux时，我们常常要创建组件和容器。
+组件是数据无关的，且工作在表现层。
+*容器*通常包裹组件及其使用的数据，用以显示和修改状态。
+你可以在这里阅读更多关于这个概念的细节：[Dan Abramov写的*表现层的容器组件*](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)。
 
-First let's update `src/components/Hello.tsx` so that it can modify state.
-We'll add two optional callback properties to `Props` named `onIncrement` and `onDecrement`:
+现在我们修改`src/components/Hello.tsx`，让它可以修改状态。
+我们将添加两个可选的回调属性到`Props`，它们分别是`onIncrement`和`onDecrement`：
 
 ```ts
 export interface Props {
@@ -476,7 +476,7 @@ export interface Props {
 }
 ```
 
-Then we'll bind those callbacks to two new buttons that we'll add into our component.
+然后将这两个回调绑定到两个新按钮上，将按钮添加到我们的组件里。
 
 ```ts
 function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
@@ -498,11 +498,11 @@ function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
 }
 ```
 
-In general, it'd be a good idea to write a few tests for `onIncrement` and `onDecrement` being triggered when their respective buttons are clicked.
-Give it a shot to get the hang of writing tests for your components.
+通常情况下，我们应该给`onIncrement`和`onDecrement`写一些测试，它们是在各自的按钮被点击时调用。
+试一试以便掌握编写测试的窍门。
 
-Now that our component is updated, we're ready to wrap it into a container.
-Let's create a file named `src/containers/Hello.tsx` and start off with the following imports.
+现在我们的组件更新好了，可以把它放在一个容器里了。
+让我们来创建一个文件`src/containers/Hello.tsx`，在开始的地方使用下列导入语句。
 
 ```ts
 import Hello from '../components/Hello';
@@ -511,16 +511,16 @@ import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 ```
 
-The real two key pieces here are the original `Hello` component as well as the `connect` function from react-redux.
-`connect` will be able to actually take our original `Hello` component and turn it into a container using two functions:
+两个关键点是初始的`Hello`组件和react-redux的`connect`函数。
+`connect`可以将我们的`Hello`组件转换成一个容器，通过以下两个函数：
 
-* `mapStateToProps` which massages the data from the current store to part of the shape that our component needs.
-* `mapDispatchToProps` which creates callback props to pump actions to our store using a given `dispatch` function.
+* `mapStateToProps`将当前store里的数据以我们的组件需要的形式传递到组件。
+* `mapDispatchToProps`利用`dispatch`函数，创建回调props将actions送到store。
 
-If we recall, our application state consists of two properties: `languageName` and `enthusiasmLevel`.
-Our `Hello` component, on the other hand, expected a `name` and an `enthusiasmLevel`.
-`mapStateToProps` will get the relevant data from the store, and adjust it if necessary, for our component's props.
-Let's go ahead and write that.
+回想一下，我们的应用包含两个属性：`languageName`和`enthusiasmLevel`。
+我们的`Hello`组件，希望得到一个`name`和一个`enthusiasmLevel`。
+`mapStateToProps`会从store得到相应的数据，如果需要的话将针对组件的props调整它。
+下面让我们继续往下写。
 
 ```ts
 export function mapStateToProps({ enthusiasmLevel, languageName }: StoreState) {
@@ -531,10 +531,10 @@ export function mapStateToProps({ enthusiasmLevel, languageName }: StoreState) {
 }
 ```
 
-Note that `mapStateToProps` only creates 2 out of 4 of the properties a `Hello` component expects.
-Namely, we still want to pass in the `onIncrement` and `onDecrement` callbacks.
-`mapDispatchToProps` is a function that takes a dispatcher function.
-This dispatcher function can pass actions into our store to make updates, so we can create a pair of callbacks that will call the dispatcher as necessary.
+注意`mapStateToProps`仅创建了`Hello`组件需要的四个属性中的两个。
+我们还想要传入`onIncrement`和`onDecrement`回调函数。
+`mapDispatchToProps`是一个函数，它需要传入一个调度函数。
+这个调度函数可以将actions传入store来触发更新，因此我们可以创建一对回调函数，它们会在需要的时候调用调度函数。
 
 ```ts
 export function mapDispatchToProps(dispatch: Dispatch<actions.EnthusiasmAction>) {
@@ -545,15 +545,15 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.EnthusiasmAction>)
 }
 ```
 
-Finally, we're ready to call `connect`.
-`connect` will first take `mapStateToProps` and `mapDispatchToProps`, and then return another function that we can use to wrap our component.
-Our resulting container is defined with the following line of code:
+最后，我们可以调用`connect`了。
+`connect`首先会接收`mapStateToProps`和`mapDispatchToProps`，然后返回另一个函数，我们用它来包裹我们的组件。
+最终的容器是通过下面的代码定义的：
 
 ```ts
 export default connect(mapStateToProps, mapDispatchToProps)(Hello);
 ```
 
-When we're finished, our file should look like this:
+现在，我们的文件应该是下面这个样子：
 
 ```ts
 // src/containers/Hello.tsx
@@ -580,10 +580,10 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.EnthusiasmAction>)
 export default connect(mapStateToProps, mapDispatchToProps)(Hello);
 ```
 
-## Creating a store
+## 创建store
 
-Let's go back to `src/index.tsx`.
-To put this all together, we need to create a store with an initial state, and set it up with all of our reducers.
+让我们回到`src/index.tsx`。
+要把所有的东西合到一起，我们需要创建一个带初始状态的store，并用我们所有的reducers来设置它。
 
 ```ts
 import { createStore } from 'redux';
@@ -596,17 +596,17 @@ const store = createStore<StoreState>(enthusiasm, {
 });
 ```
 
-`store` is, as you might've guessed, our central store for our application's global state.
+`store`可能正如你想的那样，它是我们应用全局状态的核心store。
 
-Next, we're going to swap our use of `./src/components/Hello` with `./src/containers/Hello` and use react-redux's `Provider` to wire up our props with our container.
-We'll import each:
+接下来，我们将要用`./src/containers/Hello`来包裹`./src/components/Hello`，然后使用react-redux的`Provider`将props与容器连通起来。
+我们将导入它们：
 
 ```ts
 import Hello from './containers/Hello';
 import { Provider } from 'react-redux';
 ```
 
-and pass our `store` through to the `Provider`'s attributes:
+将`store`以`Provider`的属性形式传入：
 
 ```ts
 ReactDOM.render(
@@ -617,34 +617,34 @@ ReactDOM.render(
 );
 ```
 
-Notice that `Hello` no longer needs props, since we used our `connect` function to adapt our application's state for our wrapped `Hello` component's props.
+注意，`Hello`不再需要props了，因为我们使用了`connect`函数为包裹起来的`Hello`组件的props适配了应用的状态。
 
-# Ejecting
+# 退出
 
-If at any point, you feel like there are certain customizations that the create-react-app setup has made difficult, you can always opt-out and get the various configuration options you need.
-For example, if you'd like to add a Webpack plugin, it might be necessary to take advantage of the "eject" functionality that create-react-app provides.
+如果你发现create-react-app使一些自定义设置变得困难，那么你就可以选择不使用它，使用你需要配置。
+比如，你要添加一个Webpack插件，你就可以利用create-react-app提供的“eject”功能。
 
-Simply run
+运行：
 
 ```sh
 npm run eject
 ```
 
-and you should be good to go!
+这样就可以了！
 
-As a heads up, you may want to commit all your work before running an eject.
-You cannot undo an eject command, so opting out is permanent unless you can recover from a commit prior to running an eject.
+你要注意，在运行eject前最好保存你的代码。
+你不能撤销eject命令，因此退出操作是永久性的除非你从一个运行eject前的提交来恢复工程。
 
-# Next steps
+# 下一步
 
-create-react-app comes with a lot of great stuff.
-Much of it is documented in the default `README.md` that was generated for our project, so give that a quick read.
+create-react-app带有很多很棒的功能。
+它们的大多数都在我们工程生成的`README.md`里面有记录，所以可以简单阅读一下。
 
-If you still want to learn more about Redux, you can [check out the official website](http://redux.js.org/) for documentation.
-The same goes [for MobX](https://mobx.js.org/).
+如果你想学习更多关于Redux的知识，你可以前往[官方站点](http://redux.js.org/)查看文档。
+同样的，[MobX](https://mobx.js.org/)官方站点。
 
-If you want to eject at some point, you may need to know a little bit more about Webpack.
-You can check out our [React & Webpack walkthrough here](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html).
+如果你想要在某个时间点eject，你需要了解再多关于Webpack的知识。
+你可以查看[React & Webpack教程](./React & Webpack.md)。
 
-At some point you might need routing.
-There are several solutons, but [react-router](https://github.com/ReactTraining/react-router) is probably the most popular for Redux projects, and is often used in conjunction with [react-router-redux](https://github.com/reactjs/react-router-redux).
+有时候你需要路由功能。
+已经有一些解决方案了，但是对于Redux工程来讲[react-router](https://github.com/ReactTraining/react-router)是最流行的，并经常与[react-router-redux](https://github.com/reactjs/react-router-redux)联合使用。
